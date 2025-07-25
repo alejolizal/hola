@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Personas y Direcciones</title>
+  <script src="https://unpkg.com/vue@3"></script>
+</head>
+<body>
+<div id="app">
+  <h1>Personas</h1>
+  <ul>
+    <li v-for="p in persons" :key="p.id">
+      {{ p.nombre }} ({{ p.rut }})
+      <ul>
+        <li v-for="a in p.addresses" :key="a.id">
+          {{ a.casa }} {{ a.numero }}, {{ a.comuna }}, {{ a.region }}
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+<script>
+const { createApp } = Vue;
+createApp({
+  data() {
+    return { persons: [] }
+  },
+  mounted() {
+    fetch('/api/persons')
+      .then(r => r.json())
+      .then(data => { this.persons = data; });
+  }
+}).mount('#app');
+</script>
+</body>
+</html>
